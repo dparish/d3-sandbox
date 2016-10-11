@@ -24,30 +24,33 @@ export class BarChartComponent implements OnInit {
       {name: "Kwon",     value: 42}
     ];
 
-    let width = 420;
-    let barHeight = 20;
-    let x = d3.scale.linear()
-      .range([0, width]);
+    let width = 960;
+    let height = 500;
+    let y = d3.scale.linear()
+      .range([height, 0]);
 
     let chart = d3.select(this.element.nativeElement)
-      .attr('height', barHeight * data.length)
+      .attr('height', height)
       .attr('width', width);
 
-    x.domain([0, d3.max(data, (d: KeyValue) => d.value)]);
+    y.domain([0, d3.max(data, (d: KeyValue) => d.value)]);
+
+    let barWidth = width / data.length;
 
     let bar = chart.selectAll('g')
       .data(data)
       .enter().append('g')
-      .attr('transform', (d: KeyValue, i: number): string => 'translate(0,' + i * barHeight + ')');
+      .attr('transform', (d: KeyValue, i: number): string => 'translate(' + i * barWidth + ',0)');
 
     bar.append('rect')
-      .attr('width', (d: KeyValue) => x(d.value))
-      .attr('height', barHeight - 1);
+      .attr('y', (d: KeyValue) => y(d.value))
+      .attr('height', (d: KeyValue) => height - y(d.value))
+      .attr('width', barWidth - 1);
 
     bar.append('text')
-      .attr('x', (d: KeyValue) => x(d.value) - 3)
-      .attr('y', barHeight / 2)
-      .attr('dy', '.35em')
+      .attr('x', barWidth / 2)
+      .attr('y', (d: KeyValue) => y(d.value) + 3)
+      .attr('dy', '.75em')
       .text((d: KeyValue) => d.value);
   }
 

@@ -1,9 +1,18 @@
-/deep/ .chart rect {
+/deep/ .bar {
   fill: steelblue;
 }
 
-/deep/ .chart text {
-  fill: white;
+/deep/ .axis text {
   font: 10px sans-serif;
-  text-anchor: end;
+}
+
+/deep/ .axis path,
+ .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+/deep/ .x.axis path {
+  display: none;
 }
